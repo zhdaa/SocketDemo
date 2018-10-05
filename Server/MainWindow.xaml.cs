@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -30,6 +32,7 @@ namespace Server
         }
 
         public delegate void delegate1(string str);//定义委托
+        public delegate int delegate2(string endPoint);
 
         private void btnListen_Click(object sender, RoutedEventArgs e)
         {
@@ -70,7 +73,8 @@ namespace Server
                     //将远程连接的客户端的IP地址和Socket存入集合中
                     dicSocket.Add(socketSend.RemoteEndPoint.ToString(), socketSend);
                     //将远程连接的客户端的IP地址和端口号存储下拉框中
-                    cboUsers.Items.Add(socketSend.RemoteEndPoint.ToString());
+                    //cboUsers.Items.Add(socketSend.RemoteEndPoint.ToString());
+                    Dispatcher.BeginInvoke(DispatcherPriority.Normal, new delegate2(cboUsers.Items.Add), socketSend.RemoteEndPoint.ToString());
                     //192.168.0.100:连接成功
                     Dispatcher.BeginInvoke(DispatcherPriority.Normal, new delegate1(ShowMsg), socketSend.RemoteEndPoint.ToString() + ":" + "连接成功");
                     //开启一个新的线程，不停地接收客户端发送过来的消息
@@ -125,10 +129,58 @@ namespace Server
         {
             string str = txtSendMsg.Text.Trim();
             byte[] buffer = Encoding.UTF8.GetBytes(str);
-            //socketSend.Send(buffer);
+            List<byte> list = new List<byte>();
+            list.Add(0);
+            list.AddRange(buffer);
+            //将泛型集合转换为数组
+            byte[] newBuffer = list.ToArray();
             //获得用户在下拉框中选中的IP地址
             string ip = cboUsers.SelectedItem.ToString();
-            dicSocket[ip].Send(buffer);
+            dicSocket[ip].Send(newBuffer);
+        }
+
+        /// <summary>
+        /// 选择要发送的文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnChooseFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.InitialDirectory = @"C:\Users\Administrator\Desktop";
+            ofd.Title = "请选择要发送的文件";
+            ofd.Filter = "所有文件|*.*";
+            ofd.ShowDialog();
+
+            txtFilePath.Text = ofd.FileName;
+        }
+
+        private void btnSendFile_Click(object sender, RoutedEventArgs e)
+        {
+            //获得要发送文件的路径
+            string path = txtFilePath.Text;
+            using (FileStream fsRead = new FileStream(path, FileMode.Open, FileAccess.Read))
+            {
+                byte[] buffer = new byte[1024 * 1024 * 5];
+                int r = fsRead.Read(buffer, 0, buffer.Length);
+                List<byte> list = new List<byte>();
+                list.Add(1);
+                list.AddRange(buffer);
+                byte[] newBuffer = list.ToArray();
+                dicSocket[cboUsers.SelectedItem.ToString()].Send(newBuffer, 0, r + 1, SocketFlags.None);
+            }
+        }
+
+        /// <summary>
+        /// 发送震动
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnShock_Click(object sender, RoutedEventArgs e)
+        {
+            byte[] buffer = new byte[1];
+            buffer[0] = 2;
+            dicSocket[cboUsers.SelectedItem.ToString()].Send(buffer);
         }
     }
 }

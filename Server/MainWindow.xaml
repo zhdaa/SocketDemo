@@ -5,15 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Server"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="500">
+        Title="MainWindow" Height="550" Width="700">
     <Grid>
-        <Button x:Name="btnListen" Content="开始监听" VerticalAlignment="Top" Margin="389,28,0,0" HorizontalAlignment="Left" Width="75" Click="btnListen_Click"/>
-        <TextBox x:Name="txtContent" HorizontalAlignment="Left" Height="157" TextWrapping="Wrap" VerticalAlignment="Top" Width="440" Margin="24,75,0,0"/>
-        <TextBox x:Name="txtPort" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="50000" VerticalAlignment="Top" Width="60" Margin="175,27,0,0"/>
-        <TextBox x:Name="txtIP" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="192.168.0.102" VerticalAlignment="Top" Width="127" Margin="24,27,0,0"/>
-        <TextBox x:Name="txtSendMsg" HorizontalAlignment="Left" Height="131" TextWrapping="Wrap" VerticalAlignment="Top" Width="440" Margin="24,266,0,0"/>
-        <Button x:Name="btnSendMsg" Content="发送消息" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="389,417,0,0" Click="btnSendMsg_Click"/>
-        <ComboBox x:Name="cboUsers" HorizontalAlignment="Left" Margin="264,28,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="btnListen" Content="开始监听" VerticalAlignment="Top" Margin="592,27,0,0" HorizontalAlignment="Left" Width="75" Click="btnListen_Click"/>
+        <TextBox x:Name="txtContent" HorizontalAlignment="Left" Height="157" TextWrapping="Wrap" VerticalAlignment="Top" Width="643" Margin="24,75,0,0"/>
+        <TextBox x:Name="txtPort" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="50000" VerticalAlignment="Top" Width="74" Margin="244,27,0,0"/>
+        <TextBox x:Name="txtIP" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="192.168.0.102" VerticalAlignment="Top" Width="199" Margin="24,27,0,0"/>
+        <TextBox x:Name="txtSendMsg" HorizontalAlignment="Left" Height="131" TextWrapping="Wrap" VerticalAlignment="Top" Width="643" Margin="24,266,0,0"/>
+        <Button x:Name="btnSendMsg" Content="发送消息" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="515,480,0,0" Click="btnSendMsg_Click"/>
+        <ComboBox x:Name="cboUsers" HorizontalAlignment="Left" Margin="347,27,0,0" VerticalAlignment="Top" Width="223" Height="23"/>
+        <Button x:Name="btnShock" Content="震动" HorizontalAlignment="Left" Margin="610,480,0,0" VerticalAlignment="Top" Width="57" Click="btnShock_Click"/>
+        <TextBox x:Name="txtFilePath" HorizontalAlignment="Left" Height="23" Margin="24,433,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="470"/>
+        <Button x:Name="btnSendFile" Content="发送文件" HorizontalAlignment="Left" Margin="592,433,0,0" VerticalAlignment="Top" Width="75" Click="btnSendFile_Click"/>
+        <Button x:Name="btnChooseFile" Content=" 选择" HorizontalAlignment="Left" Margin="515,433,0,0" VerticalAlignment="Top" Width="55" Click="btnChooseFile_Click"/>
 
     </Grid>
 </Window>

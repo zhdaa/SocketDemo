@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -69,10 +71,43 @@ namespace Client
                     {
                         break;
                     }
-                    string str = Encoding.UTF8.GetString(buffer, 0, r);
-                    Dispatcher.BeginInvoke(DispatcherPriority.Normal, new delegate1(ShowMsg), socketSend.RemoteEndPoint.ToString() + ":" + str);
+                    //表示发送的是文字消息
+                    if (buffer[0] == 0)
+                    {
+                        string str = Encoding.UTF8.GetString(buffer, 1, r - 1);
+                        Dispatcher.BeginInvoke(DispatcherPriority.Normal, new delegate1(ShowMsg), socketSend.RemoteEndPoint.ToString() + ":" + str);
+                    }
+                    else if (buffer[0] == 1)
+                    {
+                        SaveFileDialog sfd = new SaveFileDialog();
+                        sfd.InitialDirectory = @"C:\Users\Administrator\Desktop";
+                        sfd.Title = "请选择要保存的文件";
+                        sfd.Filter = "所有文件|*.*";
+                        sfd.ShowDialog();
+                        string path = sfd.FileName;
+                        using (FileStream fsWrite = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write))
+                        {
+                            fsWrite.Write(buffer, 1, r - 1);
+                        }
+                        MessageBox.Show("保存成功");
+                    }
+                    else if (buffer[0] == 2)
+                    {
+                        //Shock();
+                    }
                 }
                 catch { }
+            }
+        }
+
+        /// <summary>
+        /// 震动
+        /// </summary>
+        void Shock()
+        {
+            for (int i = 0; i < 500; i++)
+            {
+
             }
         }
 
